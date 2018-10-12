@@ -1,0 +1,16 @@
+#!/bin/sh
+# Set environment variables. Machine name, username and password set as script parameters.
+export ENV_ID=$1
+
+# Sanity check the script run
+if (( $# < 1 )); then
+    echo Usage: 'create.sh <environment>'
+    exit 1
+fi
+
+# Substitute env params into script template
+rm -rf main.tf; envsubst < "main-template.tem" > "main.tf";
+
+# Apply the script.
+/usr/bin/terraform apply -input=false -auto-approve
+
